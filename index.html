@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Finanzas G&T</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Utilidades */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .pb-safe {
+            padding-bottom: calc(80px + env(safe-area-inset-bottom));
+        }
+
+        /* Estilos Inputs */
+        .input-base {
+            font-size: 16px;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            width: 100%;
+            background: #f8fafc;
+            transition: all 0.2s;
+        }
+
+        .input-base:focus {
+            outline: none;
+            border-color: #4f46e5;
+            ring: 2px solid #e0e7ff;
+            background: white;
+        }
+
+        /* Tarjetas */
+        .card-base {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f1f5f9;
+        }
+
+        /* Animaciones */
+        .btn-bounce:active {
+            transform: scale(0.97);
+        }
+    </style>
+</head>
+
+<body class="text-slate-800 bg-slate-50 min-h-screen flex flex-col">
+
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200 px-4 py-3 md:py-4 shadow-sm">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div
+                    class="bg-indigo-600 text-white w-9 h-9 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold leading-none tracking-tight text-slate-800">Mis Finanzas</h1>
+                    <p class="text-[11px] text-gray-500 font-medium uppercase tracking-wide mt-0.5" id="current-date">
+                        Cargando...</p>
+                </div>
+            </div>
+
+            <div class="hidden md:flex gap-1 bg-gray-100 p-1 rounded-lg">
+                <button onclick="switchView('home')" id="desk-nav-home"
+                    class="px-4 py-2 rounded-md text-sm font-bold bg-white shadow text-indigo-600 transition-all">Inicio</button>
+                <button onclick="switchView('stats')" id="desk-nav-stats"
+                    class="px-4 py-2 rounded-md text-sm font-bold text-gray-500 hover:text-gray-700 transition-all">Reportes</button>
+            </div>
+
+            <button onclick="toggleMenu()"
+                class="w-9 h-9 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-full transition-colors">
+                <i class="fa-solid fa-gear text-lg"></i>
+            </button>
+        </div>
+    </header>
+
+    <div id="settings-menu" class="hidden fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm transition-opacity"
+        onclick="toggleMenu()">
+        <div class="absolute top-20 right-4 w-72 bg-white rounded-2xl shadow-2xl overflow-hidden transform transition-all"
+            onclick="event.stopPropagation()">
+            <div class="p-4 border-b border-gray-100 bg-gray-50/50">
+                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Gestión de Datos</h3>
+            </div>
+            <button onclick="exportData()"
+                class="w-full flex items-center gap-3 p-4 hover:bg-gray-50 text-left text-blue-600 border-b border-gray-50 text-sm font-medium transition-colors">
+                <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center"><i
+                        class="fa-solid fa-cloud-arrow-down"></i></div>
+                Respaldar Datos
+            </button>
+            <button onclick="document.getElementById('fileInput').click()"
+                class="w-full flex items-center gap-3 p-4 hover:bg-gray-50 text-left text-emerald-600 border-b border-gray-50 text-sm font-medium transition-colors">
+                <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center"><i
+                        class="fa-solid fa-cloud-arrow-up"></i></div>
+                Cargar Respaldo
+            </button>
+            <button onclick="clearAll()"
+                class="w-full flex items-center gap-3 p-4 hover:bg-red-50 text-left text-red-500 text-sm font-medium transition-colors">
+                <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center"><i
+                        class="fa-solid fa-trash-can"></i></div>
+                Borrar Todo
+            </button>
+            <input type="file" id="fileInput" class="hidden" onchange="importData(this)">
+        </div>
+    </div>
+
+    <main class="flex-grow p-4 md:p-8 max-w-7xl mx-auto w-full space-y-8">
+
+        <div id="view-home" class="space-y-6 md:space-y-8 animate-fade-in">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                <div
+                    class="bg-gradient-to-br from-indigo-600 to-violet-700 rounded-2xl p-6 text-white shadow-xl shadow-indigo-500/20 relative overflow-hidden md:col-span-2 lg:col-span-2">
+                    <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+                    <div class="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                        <div>
+                            <p class="text-indigo-100 text-xs font-bold uppercase tracking-widest mb-1">Patrimonio Total
+                                (Q)</p>
+                            <h2 class="text-4xl md:text-5xl font-bold tracking-tight mb-2" id="total-assets-q">Q0.00
+                            </h2>
+                            <div
+                                class="inline-flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur-md border border-white/10">
+                                <i class="fa-solid fa-arrow-trend-up text-emerald-300"></i>
+                                <span class="text-sm text-indigo-100">Interés mensual: <span
+                                        class="text-white font-bold" id="total-interest-q">+Q0.00</span></span>
+                            </div>
+                        </div>
+                        <div class="hidden md:block text-right">
+                            <i class="fa-solid fa-chart-line text-6xl text-white/20"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-2xl p-6 text-white shadow-xl shadow-emerald-500/20 relative overflow-hidden">
+                    <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
+                    <p class="text-emerald-100 text-xs font-bold uppercase tracking-widest mb-1">Patrimonio USD</p>
+                    <h2 class="text-3xl font-bold tracking-tight mb-2" id="total-assets-usd">$0.00</h2>
+                    <div class="text-xs text-emerald-100 flex items-center gap-1">
+                        <i class="fa-solid fa-circle-check text-emerald-300"></i>
+                        <span>Interés: <span class="font-bold" id="total-interest-usd">+$0.00</span> (1.0%)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-xs font-bold text-gray-400 mb-4 uppercase tracking-wide">Mis Cuentas</h3>
+                <div
+                    class="flex md:grid md:grid-cols-3 lg:grid-cols-6 overflow-x-auto md:overflow-visible gap-4 pb-4 md:pb-0 snap-x hide-scrollbar">
+
+                    <div
+                        class="card-base p-4 min-w-[150px] snap-center border-l-4 border-slate-700 hover:translate-y-[-2px] transition-transform">
+                        <div class="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Monetaria</div>
+                        <div class="text-lg font-bold text-slate-800 mt-1" id="bal-monetaria">Q0.00</div>
+                    </div>
+
+                    <div
+                        class="card-base p-4 min-w-[140px] snap-center border-l-4 border-emerald-500 hover:translate-y-[-2px] transition-transform">
+                        <div class="text-gray-400 text-[10px] uppercase font-bold tracking-wider">Efectivo</div>
+                        <div class="text-lg font-bold text-slate-800 mt-1" id="bal-efectivo">Q0.00</div>
+                    </div>
+
+                    <div
+                        class="card-base p-4 min-w-[160px] snap-center border-l-4 border-purple-600 bg-purple-50/30 hover:translate-y-[-2px] transition-transform">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-purple-600 text-[9px] uppercase font-bold">Fondo 5A</span>
+                            <span class="bg-purple-100 text-purple-700 text-[9px] px-1 rounded">5.5%</span>
+                        </div>
+                        <div class="text-lg font-bold text-slate-800" id="bal-ahorro5">Q0.00</div>
+                    </div>
+
+                    <div
+                        class="card-base p-4 min-w-[160px] snap-center border-l-4 border-blue-500 bg-blue-50/30 hover:translate-y-[-2px] transition-transform">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-blue-600 text-[9px] uppercase font-bold">Ah. Temp</span>
+                            <span class="bg-blue-100 text-blue-700 text-[9px] px-1 rounded">3.5%</span>
+                        </div>
+                        <div class="text-lg font-bold text-slate-800" id="bal-temporal">Q0.00</div>
+                    </div>
+
+                    <div
+                        class="card-base p-4 min-w-[160px] snap-center border-l-4 border-cyan-500 bg-cyan-50/30 hover:translate-y-[-2px] transition-transform">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-cyan-600 text-[9px] uppercase font-bold">Ah. Princ</span>
+                            <span class="bg-cyan-100 text-cyan-700 text-[9px] px-1 rounded">3.5%</span>
+                        </div>
+                        <div class="text-lg font-bold text-slate-800" id="bal-principal">Q0.00</div>
+                    </div>
+
+                    <div
+                        class="card-base p-4 min-w-[150px] snap-center border-l-4 border-emerald-700 bg-emerald-50/30 hover:translate-y-[-2px] transition-transform">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-emerald-700 text-[9px] uppercase font-bold">Dólares</span>
+                            <span class="bg-emerald-100 text-emerald-800 text-[9px] px-1 rounded">1.0%</span>
+                        </div>
+                        <div class="text-lg font-bold text-slate-800" id="bal-dolares">$0.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+
+                <div class="lg:col-span-1">
+                    <div id="form-container" class="card-base p-5 lg:sticky lg:top-24">
+                        <h3 class="text-sm font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-pen-to-square text-indigo-500"></i> Registrar
+                        </h3>
+
+                        <form onsubmit="addTransaction(event)" class="space-y-4">
+                            <div class="grid grid-cols-2 bg-slate-100 p-1 rounded-xl gap-1">
+                                <button type="button" onclick="setType('expense')" id="btn-expense"
+                                    class="py-2.5 rounded-lg text-sm font-bold shadow-sm bg-white text-rose-600 transition-all btn-bounce">Gasto</button>
+                                <button type="button" onclick="setType('income')" id="btn-income"
+                                    class="py-2.5 rounded-lg text-sm font-bold text-gray-400 transition-all btn-bounce">Ingreso</button>
+                            </div>
+                            <input type="hidden" id="txType" value="expense">
+
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="text-[10px] font-bold text-gray-400 uppercase ml-1">Cuenta</label>
+                                    <div class="relative">
+                                        <select id="txAccount" class="input-base appearance-none font-medium text-sm">
+                                            <option value="monetaria">💳 Monetaria G&T</option>
+                                            <option value="efectivo">💵 Efectivo Físico</option>
+                                            <option disabled>──────────</option>
+                                            <option value="ahorro5">🏦 Fondo 5 Años</option>
+                                            <option value="temporal">🔹 Ahorro Temporal</option>
+                                            <option value="principal">🔹 Ahorro Principal</option>
+                                            <option value="asdep">🔸 ASDEP</option>
+                                            <option disabled>──────────</option>
+                                            <option value="dolares">🔹 US Cuenta Dólares</option>
+                                        </select>
+                                        <div
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="text-[10px] font-bold text-gray-400 uppercase ml-1">Monto</label>
+                                        <input type="number" step="0.01" id="txAmount"
+                                            class="input-base text-lg font-bold" placeholder="0.00" required
+                                            inputmode="decimal">
+                                    </div>
+                                    <div>
+                                        <label class="text-[10px] font-bold text-gray-400 uppercase ml-1">Fecha</label>
+                                        <input type="date" id="txDate" class="input-base text-sm" required>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="flex justify-between mb-1 ml-1">
+                                        <label class="text-[10px] font-bold text-gray-400 uppercase">Categoría</label>
+                                        <button type="button" onclick="addCategory()"
+                                            class="text-[10px] text-indigo-600 font-bold hover:underline">+
+                                            Crear</button>
+                                    </div>
+                                    <div class="relative">
+                                        <select id="txCategory" class="input-base appearance-none font-medium text-sm">
+                                        </select>
+                                        <div
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                            <i class="fa-solid fa-chevron-down text-xs"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="text-[10px] font-bold text-gray-400 uppercase ml-1">Nota</label>
+                                    <input type="text" id="txDesc" class="input-base text-sm" placeholder="Opcional">
+                                </div>
+                            </div>
+
+                            <button type="submit" id="submitBtn"
+                                class="w-full bg-rose-600 text-white py-3.5 rounded-xl font-bold shadow-lg shadow-rose-500/20 hover:bg-rose-700 transition-colors btn-bounce">
+                                Registrar Gasto
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2">
+                    <div class="card-base overflow-hidden min-h-[400px] flex flex-col">
+                        <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                            <h3 class="font-bold text-gray-700 text-sm">Movimientos Recientes</h3>
+                            <span
+                                class="text-[10px] font-bold bg-white border border-gray-100 text-gray-400 px-2 py-1 rounded-full"
+                                id="tx-count">0</span>
+                        </div>
+                        <div id="txList" class="divide-y divide-gray-50 overflow-y-auto max-h-[600px] flex-grow">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-16 md:hidden"></div>
+        </div>
+
+        <div id="view-stats" class="hidden space-y-6 animate-fade-in">
+            <h2 class="text-2xl font-bold text-slate-800">Reporte de Gastos</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card-base p-8 flex flex-col items-center justify-center">
+                    <div class="w-full h-64 md:h-80 relative">
+                        <canvas id="expensesChart"></canvas>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <p class="text-xs text-gray-400 uppercase font-bold tracking-wide">Total Gastado (Histórico)</p>
+                        <p class="text-3xl font-bold text-rose-600 tracking-tight" id="stat-total-spent">Q0.00</p>
+                    </div>
+                </div>
+
+                <div class="card-base overflow-hidden">
+                    <div class="p-4 border-b border-gray-50 bg-gray-50/50">
+                        <h3 class="font-bold text-gray-700 text-sm">Categorías Top</h3>
+                    </div>
+                    <div id="statsList" class="divide-y divide-gray-50 overflow-y-auto max-h-[400px]">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur border-t border-gray-200 flex justify-around items-center z-40 pb-safe pt-2 shadow-[0_-4px_20px_rgba(0,0,0,0.03)]">
+        <button onclick="switchView('home')" id="mob-nav-home"
+            class="nav-item active flex flex-col items-center gap-1 p-2 w-20 transition-colors text-indigo-600">
+            <i class="fa-solid fa-house text-xl"></i>
+            <span class="text-[10px] font-bold">Inicio</span>
+        </button>
+
+        <button onclick="document.getElementById('form-container').scrollIntoView({behavior:'smooth'})"
+            class="flex flex-col items-center justify-center -mt-8">
+            <div
+                class="w-14 h-14 bg-indigo-600 rounded-full flex items-center justify-center text-white shadow-lg shadow-indigo-500/40 border-4 border-slate-50">
+                <i class="fa-solid fa-plus text-xl"></i>
+            </div>
+        </button>
+
+        <button onclick="switchView('stats')" id="mob-nav-stats"
+            class="nav-item flex flex-col items-center gap-1 p-2 w-20 transition-colors text-gray-400">
+            <i class="fa-solid fa-chart-pie text-xl"></i>
+            <span class="text-[10px] font-bold">Reporte</span>
+        </button>
+    </nav>
+
+    <script>
+        // === CONFIGURACIÓN ===
+        const RATES = {
+            ahorro5: 0.055,
+            temporal: 0.035,
+            principal: 0.035,
+            asdep: 0,
+            dolares: 0.01
+        };
+
+        let categories = ["Saldo Inicial", "Comida", "Transporte", "Suscripciones", "Entretenimiento", "Otros Gastos", "Renta", "Servicios", "Educación", "Salud", "Ropa/Uniforme"];
+        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        let myChart = null;
+
+        // === INICIO ===
+        document.addEventListener('DOMContentLoaded', () => {
+            const dateStr = new Date().toLocaleDateString('es-GT', { weekday: 'long', day: 'numeric', month: 'long' });
+            document.getElementById('current-date').innerText = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+            document.getElementById('txDate').valueAsDate = new Date();
+            init();
+        });
+
+        function init() {
+            renderCategories();
+            renderList();
+            updateBalances();
+        }
+
+        // === LÓGICA DE NEGOCIO ===
+        function updateBalances() {
+            let bal = { monetaria: 0, efectivo: 0, ahorro5: 0, temporal: 0, principal: 0, asdep: 0, dolares: 0 };
+
+            transactions.forEach(tx => {
+                let amt = parseFloat(tx.amount);
+                if (tx.type === 'income') bal[tx.account] += amt;
+                else bal[tx.account] -= amt;
+            });
+
+            const fmtQ = (n) => "Q" + n.toLocaleString('es-GT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const fmtUsd = (n) => "$" + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            // Actualizar DOM
+            const ids = ['monetaria', 'efectivo', 'ahorro5', 'temporal', 'principal', 'asdep'];
+            ids.forEach(id => {
+                const el = document.getElementById(`bal-${id}`);
+                if (el) el.innerText = fmtQ(bal[id]);
+            });
+            document.getElementById('bal-dolares').innerText = fmtUsd(bal.dolares);
+
+            // Totales
+            let totalQ = bal.monetaria + bal.efectivo + bal.ahorro5 + bal.temporal + bal.principal + bal.asdep;
+            let interestQ = ((bal.ahorro5 * RATES.ahorro5) + (bal.temporal * RATES.temporal) + (bal.principal * RATES.principal)) / 12;
+
+            document.getElementById('total-assets-q').innerText = fmtQ(totalQ);
+            document.getElementById('total-interest-q').innerText = "+" + fmtQ(interestQ);
+            document.getElementById('total-assets-usd').innerText = fmtUsd(bal.dolares);
+            document.getElementById('total-interest-usd').innerText = "+" + fmtUsd(bal.dolares * RATES.dolares / 12);
+        }
+
+        function addTransaction(e) {
+            e.preventDefault();
+            const tx = {
+                id: Date.now(),
+                type: document.getElementById('txType').value,
+                account: document.getElementById('txAccount').value,
+                category: document.getElementById('txCategory').value,
+                amount: parseFloat(document.getElementById('txAmount').value),
+                desc: document.getElementById('txDesc').value,
+                date: document.getElementById('txDate').value
+            };
+            transactions.push(tx);
+            saveData();
+            init();
+
+            // Reset UI
+            document.getElementById('txAmount').value = "";
+            document.getElementById('txDesc').value = "";
+            const btn = document.getElementById('submitBtn');
+            const original = btn.innerText;
+            btn.innerText = "¡Listo! ✅";
+            setTimeout(() => btn.innerText = original, 1000);
+        }
+
+        function deleteTx(id) {
+            if (confirm("¿Eliminar este movimiento?")) {
+                transactions = transactions.filter(t => t.id !== id);
+                saveData();
+                init();
+            }
+        }
+
+        // === UI & LISTAS ===
+        function renderList() {
+            const list = document.getElementById('txList');
+            list.innerHTML = "";
+            document.getElementById('tx-count').innerText = transactions.length;
+
+            const sorted = [...transactions].sort((a, b) => b.id - a.id);
+            if (sorted.length === 0) {
+                list.innerHTML = `<div class="p-10 text-center text-gray-400 text-xs uppercase tracking-wide flex flex-col items-center gap-2"><i class="fa-solid fa-receipt text-2xl opacity-20"></i>Sin movimientos</div>`;
+                return;
+            }
+
+            const accNames = { monetaria: "Monetaria", efectivo: "Efectivo", ahorro5: "Fondo 5a", temporal: "Ah.Temp", principal: "Ah.Princ", asdep: "ASDEP", dolares: "USD" };
+
+            sorted.forEach(tx => {
+                const isExp = tx.type === 'expense';
+                const color = isExp ? 'text-rose-600' : 'text-emerald-600';
+                const sign = isExp ? '-' : '+';
+                const sym = tx.account === 'dolares' ? '$' : 'Q';
+                const bg = isExp ? 'bg-rose-50' : 'bg-emerald-50';
+                const icon = isExp ? 'fa-arrow-trend-down' : 'fa-arrow-trend-up';
+
+                list.innerHTML += `
+                <div class="p-4 flex justify-between items-center hover:bg-gray-50 transition-colors cursor-pointer group" onclick="deleteTx(${tx.id})">
+                    <div class="flex gap-4 items-center overflow-hidden">
+                        <div class="w-10 h-10 rounded-full ${bg} flex items-center justify-center ${color} shrink-0 text-sm">
+                            <i class="fa-solid ${icon}"></i>
+                        </div>
+                        <div class="min-w-0">
+                            <div class="font-bold text-slate-700 text-sm truncate">${tx.category}</div>
+                            <div class="text-[11px] text-gray-400 flex gap-1 items-center truncate">
+                                <span class="bg-gray-100 px-1.5 rounded text-gray-500 font-medium">${accNames[tx.account]}</span>
+                                <span>• ${tx.date}</span>
+                                <span class="hidden group-hover:inline text-rose-400 ml-2 text-[10px]"><i class="fa-solid fa-trash"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right shrink-0 pl-2">
+                        <div class="font-bold ${color} text-sm">${sign}${sym}${tx.amount.toFixed(2)}</div>
+                    </div>
+                </div>`;
+            });
+        }
+
+        function switchView(view) {
+            const vHome = document.getElementById('view-home');
+            const vStats = document.getElementById('view-stats');
+
+            // Botones Desktop
+            const dHome = document.getElementById('desk-nav-home');
+            const dStats = document.getElementById('desk-nav-stats');
+
+            // Botones Mobile
+            const mHome = document.getElementById('mob-nav-home');
+            const mStats = document.getElementById('mob-nav-stats');
+
+            if (view === 'home') {
+                vHome.classList.remove('hidden'); vStats.classList.add('hidden');
+
+                // Active States
+                mHome.classList.add('text-indigo-600'); mHome.classList.remove('text-gray-400');
+                mStats.classList.remove('text-indigo-600'); mStats.classList.add('text-gray-400');
+
+                dHome.classList.add('bg-white', 'shadow', 'text-indigo-600'); dHome.classList.remove('text-gray-500');
+                dStats.classList.remove('bg-white', 'shadow', 'text-indigo-600'); dStats.classList.add('text-gray-500');
+            } else {
+                vHome.classList.add('hidden'); vStats.classList.remove('hidden');
+                renderStats();
+
+                // Active States
+                mHome.classList.remove('text-indigo-600'); mHome.classList.add('text-gray-400');
+                mStats.classList.add('text-indigo-600'); mStats.classList.remove('text-gray-400');
+
+                dHome.classList.remove('bg-white', 'shadow', 'text-indigo-600'); dHome.classList.add('text-gray-500');
+                dStats.classList.add('bg-white', 'shadow', 'text-indigo-600'); dStats.classList.remove('text-gray-500');
+            }
+            window.scrollTo(0, 0);
+        }
+
+        function setType(type) {
+            document.getElementById('txType').value = type;
+            const btnExp = document.getElementById('btn-expense');
+            const btnInc = document.getElementById('btn-income');
+            const sBtn = document.getElementById('submitBtn');
+
+            if (type === 'expense') {
+                btnExp.className = "py-2.5 rounded-lg text-sm font-bold shadow-sm bg-white text-rose-600 transition-all btn-bounce";
+                btnInc.className = "py-2.5 rounded-lg text-sm font-bold text-gray-400 transition-all btn-bounce";
+                sBtn.className = "w-full bg-rose-600 text-white py-3.5 rounded-xl font-bold shadow-lg shadow-rose-500/20 hover:bg-rose-700 transition-colors btn-bounce";
+                sBtn.innerText = "Registrar Gasto";
+            } else {
+                btnInc.className = "py-2.5 rounded-lg text-sm font-bold shadow-sm bg-white text-emerald-600 transition-all btn-bounce";
+                btnExp.className = "py-2.5 rounded-lg text-sm font-bold text-gray-400 transition-all btn-bounce";
+                sBtn.className = "w-full bg-emerald-600 text-white py-3.5 rounded-xl font-bold shadow-lg shadow-emerald-500/20 hover:bg-emerald-700 transition-colors btn-bounce";
+                sBtn.innerText = "Registrar Ingreso";
+            }
+        }
+
+        function renderStats() {
+            const expenses = transactions.filter(t => t.type === 'expense' && t.category !== 'Saldo Inicial');
+            const grouped = {};
+            let total = 0;
+
+            expenses.forEach(tx => {
+                let amt = parseFloat(tx.amount);
+                if (tx.account === 'dolares') amt = amt * 7.75;
+                if (!grouped[tx.category]) grouped[tx.category] = 0;
+                grouped[tx.category] += amt;
+                total += amt;
+            });
+
+            document.getElementById('stat-total-spent').innerText = "Q" + total.toLocaleString('es-GT', { minimumFractionDigits: 2 });
+
+            const ctx = document.getElementById('expensesChart').getContext('2d');
+            if (myChart) myChart.destroy();
+
+            const labels = Object.keys(grouped).sort((a, b) => grouped[b] - grouped[a]);
+            const data = labels.map(k => grouped[k]);
+            const colors = ['#4f46e5', '#ec4899', '#10b981', '#f59e0b', '#06b6d4', '#8b5cf6'];
+
+            myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{ data: data, backgroundColor: colors, borderWidth: 0, hoverOffset: 10 }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    cutout: '75%'
+                }
+            });
+
+            const list = document.getElementById('statsList');
+            list.innerHTML = "";
+            labels.forEach((cat, i) => {
+                const pct = ((grouped[cat] / total) * 100).toFixed(1);
+                list.innerHTML += `
+                <div class="p-4 flex items-center justify-between hover:bg-gray-50">
+                    <div class="flex items-center gap-3">
+                        <div class="w-3 h-3 rounded-full" style="background-color: ${colors[i % colors.length]}"></div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-700">${cat}</p>
+                            <div class="w-24 h-1.5 bg-gray-100 rounded-full mt-1 overflow-hidden">
+                                <div class="h-full rounded-full" style="width: ${pct}%; background-color: ${colors[i % colors.length]}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-bold text-slate-800">Q${grouped[cat].toLocaleString('es-GT', { maximumFractionDigits: 0 })}</p>
+                        <p class="text-[10px] text-gray-400 font-bold">${pct}%</p>
+                    </div>
+                </div>`;
+            });
+        }
+
+        // === UTILIDADES ===
+        function renderCategories() {
+            const s = document.getElementById('txCategory');
+            s.innerHTML = "";
+            let st = JSON.parse(localStorage.getItem('categories'));
+            if (st) categories = st;
+            categories.forEach(c => s.innerHTML += `<option value="${c}">${c}</option>`);
+        }
+        function addCategory() {
+            const n = prompt("Nombre de categoría:");
+            if (n) { categories.push(n); localStorage.setItem('categories', JSON.stringify(categories)); renderCategories(); document.getElementById('txCategory').value = n; }
+        }
+        function saveData() { localStorage.setItem('transactions', JSON.stringify(transactions)); }
+        function toggleMenu() {
+            const m = document.getElementById('settings-menu');
+            m.classList.toggle('hidden');
+        }
+        function exportData() {
+            const d = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(transactions));
+            const a = document.createElement('a'); a.href = d; a.download = "backup.json"; document.body.appendChild(a); a.click(); a.remove(); toggleMenu();
+        }
+        function importData(inp) {
+            const f = inp.files[0]; if (!f) return;
+            const r = new FileReader();
+            r.onload = e => { try { transactions = JSON.parse(e.target.result); saveData(); init(); alert("Datos cargados"); toggleMenu(); } catch (err) { alert("Error"); } };
+            r.readAsText(f);
+        }
+        function clearAll() { if (confirm("¿Borrar todo?")) { localStorage.clear(); location.reload(); } }
+    </script>
+</body>
+
+</html>
