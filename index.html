@@ -6,7 +6,6 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Qontrol</title>
-
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#4f46e5">
     <meta name="apple-mobile-web-app-title" content="Qontrol">
@@ -17,7 +16,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
-        /* FIX SAFARI: Scroll suave nativo y optimización de toques */
         html {
             -webkit-text-size-adjust: 100%;
             scroll-behavior: smooth;
@@ -49,7 +47,6 @@
             background: white;
         }
 
-        /* FIX FECHA: Altura mínima para dedo */
         input[type="date"] {
             display: block;
             -webkit-appearance: none;
@@ -123,7 +120,7 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
-            transition: color 0.2s;
+            transition: all 0.2s;
         }
 
         .nav-item.active {
@@ -145,9 +142,8 @@
             letter-spacing: 0.05em;
         }
 
-        /* FIX SCROLL MARGIN: Espacio extra arriba del formulario para que no se esconda */
         .scroll-target {
-            scroll-margin-top: 140px;
+            scroll-margin-top: 120px;
         }
     </style>
 </head>
@@ -172,7 +168,7 @@
                     Entrar <i class="fa-solid fa-arrow-right ml-2"></i>
                 </button>
             </form>
-            <p class="text-[10px] text-gray-300 mt-10 uppercase tracking-widest">v9.2.0 • Safari Patch</p>
+            <p class="text-[10px] text-gray-300 mt-10 uppercase tracking-widest">v10.2.0 • Math Fix</p>
         </div>
     </div>
 
@@ -277,47 +273,8 @@
 
                 <div>
                     <h3 class="text-xs font-bold text-gray-400 mb-4 uppercase tracking-wide ml-1">Mis Cuentas</h3>
-                    <div
+                    <div id="accounts-container"
                         class="flex md:grid md:grid-cols-4 lg:grid-cols-7 overflow-x-auto md:overflow-visible gap-4 pb-4 md:pb-0 snap-x hide-scrollbar">
-                        <div class="card-base p-4 min-w-[150px] snap-center border-l-4 border-slate-700">
-                            <div class="text-gray-400 text-[9px] uppercase font-bold tracking-wider">Monetaria G&T</div>
-                            <div class="text-lg font-bold text-slate-800 mt-1 amount-text" id="bal-monetaria">Q0.00
-                            </div>
-                        </div>
-                        <div class="card-base p-4 min-w-[140px] snap-center border-l-4 border-emerald-500">
-                            <div class="text-gray-400 text-[9px] uppercase font-bold tracking-wider">Efectivo</div>
-                            <div class="text-lg font-bold text-slate-800 mt-1 amount-text" id="bal-efectivo">Q0.00</div>
-                        </div>
-                        <div
-                            class="card-base p-4 min-w-[160px] snap-center border-l-4 border-purple-600 bg-purple-50/20">
-                            <div
-                                class="flex justify-between items-center font-bold text-[9px] text-purple-600 uppercase">
-                                <span>Fondo 5A</span><span class="bg-purple-100 px-1 rounded">5.5%</span>
-                            </div>
-                            <div class="text-lg font-bold text-slate-800 mt-1 amount-text" id="bal-ahorro5">Q0.00</div>
-                        </div>
-                        <div class="card-base p-4 min-w-[160px] snap-center border-l-4 border-blue-500 bg-blue-50/20">
-                            <div class="flex justify-between items-center font-bold text-[9px] text-blue-600 uppercase">
-                                <span>Ah. Temp</span><span class="bg-blue-100 px-1 rounded">3.5%</span>
-                            </div>
-                            <div class="text-lg font-bold text-slate-800 mt-1 amount-text" id="bal-temporal">Q0.00</div>
-                        </div>
-                        <div class="card-base p-4 min-w-[160px] snap-center border-l-4 border-cyan-500 bg-cyan-50/20">
-                            <div class="flex justify-between items-center font-bold text-[9px] text-cyan-600 uppercase">
-                                <span>Ah. Princ</span><span class="bg-cyan-100 px-1 rounded">3.5%</span>
-                            </div>
-                            <div class="text-lg font-bold text-slate-800 mt-1 amount-text" id="bal-principal">Q0.00
-                            </div>
-                        </div>
-                        <div class="card-base p-4 min-w-[140px] snap-center border-l-4 border-orange-500">
-                            <div class="text-gray-400 text-[9px] uppercase font-bold tracking-wider">ASDEP</div>
-                            <div class="text-lg font-bold text-slate-800 mt-1 amount-text" id="bal-asdep">Q0.00</div>
-                        </div>
-                        <div
-                            class="card-base p-4 min-w-[150px] snap-center border-l-4 border-emerald-600 bg-emerald-50/20">
-                            <div class="text-emerald-700 text-[9px] uppercase font-bold tracking-wider">Cuenta USD</div>
-                            <div class="text-lg font-bold text-slate-800 mt-1 amount-text" id="bal-dolares">$0.00</div>
-                        </div>
                     </div>
                 </div>
 
@@ -341,15 +298,7 @@
                                     <div>
                                         <label class="text-[10px] font-bold text-gray-400 uppercase ml-1">Origen</label>
                                         <select id="txAccount" onchange="filterDestAccount()"
-                                            class="input-base text-xs font-bold">
-                                            <option value="monetaria">Monetaria G&T</option>
-                                            <option value="efectivo">Efectivo</option>
-                                            <option value="ahorro5">Fondo 5A</option>
-                                            <option value="temporal">Ah. Temporal</option>
-                                            <option value="principal">Ah. Principal</option>
-                                            <option value="asdep">ASDEP</option>
-                                            <option value="dolares">Cuenta USD</option>
-                                        </select>
+                                            class="input-base text-xs font-bold"></select>
                                     </div>
                                     <div>
                                         <label class="text-[10px] font-bold text-gray-400 uppercase ml-1">Fecha</label>
@@ -359,11 +308,8 @@
                                 </div>
 
                                 <div>
-                                    <div class="flex justify-between mb-1 ml-1">
+                                    <div class="mb-1 ml-1">
                                         <label class="text-[10px] font-bold text-gray-400 uppercase">Categoría</label>
-                                        <button type="button" onclick="addCategory()"
-                                            class="text-[10px] text-indigo-600 font-bold hover:underline">+
-                                            Crear</button>
                                     </div>
                                     <select id="txCategory" onchange="toggleTransferUI(this.value)"
                                         class="input-base text-xs font-bold"></select>
@@ -401,16 +347,14 @@
 
             <div id="view-payments" class="hidden space-y-6 animate-fade-in">
                 <h2 class="text-2xl font-bold text-slate-800">Pagos Recurrentes</h2>
-
                 <div class="card-base p-0 overflow-hidden border border-indigo-50 shadow-sm">
                     <div class="p-4 bg-white border-b border-slate-50 flex justify-between items-center">
                         <h4 class="text-xs font-bold uppercase text-slate-500 tracking-widest flex items-center gap-2">
                             <i class="fa-regular fa-calendar-check text-indigo-500"></i> Próximos Pagos Fijos
                         </h4>
                         <button onclick="openRemindersModal()"
-                            class="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-full transition-colors flex items-center gap-1">
-                            <i class="fa-solid fa-sliders"></i> Gestionar
-                        </button>
+                            class="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-full transition-colors flex items-center gap-1"><i
+                                class="fa-solid fa-sliders"></i> Gestionar</button>
                     </div>
                     <div class="p-4 bg-slate-50/50">
                         <div id="reminders-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3"></div>
@@ -443,7 +387,7 @@
                         id="year-copy"></span> Todos los Derechos Reservados</p>
                 <p class="text-slate-600 text-sm font-bold">Carlos Eduardo Hernández Lecointe</p>
                 <div class="flex justify-center gap-4 text-slate-300 text-xs"><span>Versión
-                        9.2.0</span><span>•</span><span>QA Software Engineer</span></div>
+                        10.2.0</span><span>•</span><span>QA Software Engineer</span></div>
             </footer>
         </main>
     </div>
@@ -451,21 +395,17 @@
     <div id="reminders-modal" class="hidden fixed inset-0 z-[400] modal-overlay flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-fade-in">
             <div class="p-4 bg-indigo-600 text-white flex justify-between items-center">
-                <h3 class="font-bold">Gestionar Pagos Fijos</h3>
-                <button onclick="closeRemindersModal()"
+                <h3 class="font-bold">Gestionar Pagos Fijos</h3><button onclick="closeRemindersModal()"
                     class="text-white hover:bg-white/20 rounded-full w-8 h-8 flex items-center justify-center"><i
                         class="fa-solid fa-times"></i></button>
             </div>
             <div class="p-4 bg-slate-50 border-b border-slate-100 space-y-3">
                 <input type="hidden" id="edit-id">
-                <div class="grid grid-cols-2 gap-3">
-                    <input type="text" id="fix-name" placeholder="Nombre" class="input-base text-sm">
-                    <input type="number" id="fix-amount" placeholder="Monto (Q)" class="input-base text-sm" step="0.01">
-                </div>
-                <div class="flex gap-3">
-                    <input type="number" id="fix-day" placeholder="Día (1-31)" class="input-base text-sm w-1/3" min="1"
-                        max="31">
-                    <button onclick="saveFixedPayment()"
+                <div class="grid grid-cols-2 gap-3"><input type="text" id="fix-name" placeholder="Nombre"
+                        class="input-base text-sm"><input type="number" id="fix-amount" placeholder="Monto (Q)"
+                        class="input-base text-sm" step="0.01"></div>
+                <div class="flex gap-3"><input type="number" id="fix-day" placeholder="Día (1-31)"
+                        class="input-base text-sm w-1/3" min="1" max="31"><button onclick="saveFixedPayment()"
                         class="flex-1 bg-indigo-600 text-white font-bold rounded-lg text-sm hover:bg-indigo-700 transition-colors shadow-sm">Guardar</button>
                 </div>
             </div>
@@ -473,34 +413,53 @@
         </div>
     </div>
 
-    <nav
-        class="md:hidden fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-md border-t border-slate-200 flex justify-around items-end z-[500] pb-5 pt-2 px-2 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
-        <button onclick="switchView('home')" id="mob-nav-home" class="nav-item active flex-1 cursor-pointer">
-            <i class="fa-solid fa-house"></i>
-            <span>Inicio</span>
-        </button>
-        <button onclick="switchView('payments')" id="mob-nav-payments" class="nav-item inactive flex-1 cursor-pointer">
-            <i class="fa-solid fa-calendar-check"></i>
-            <span>Pagos</span>
-        </button>
-
-        <div class="relative -top-5" id="fab-container">
-            <button onclick="scrollToForm()"
-                class="btn-bounce w-14 h-14 bg-indigo-600 rounded-full flex items-center justify-center text-white shadow-xl border-4 border-white transition-all mx-auto cursor-pointer">
-                <i class="fa-solid fa-plus text-xl"></i>
-            </button>
+    <div id="manager-modal" class="hidden fixed inset-0 z-[400] modal-overlay flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-fade-in">
+            <div class="p-4 bg-indigo-600 text-white flex justify-between items-center">
+                <h3 class="font-bold" id="manager-title">Gestionar</h3><button onclick="closeManager()"
+                    class="text-white hover:bg-white/20 rounded-full w-8 h-8 flex items-center justify-center"><i
+                        class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="p-4 bg-slate-50 border-b border-slate-100 flex gap-2">
+                <input type="text" id="manager-input" placeholder="Nuevo nombre" class="input-base text-sm flex-1">
+                <select id="manager-currency" class="input-base text-sm w-20 hidden">
+                    <option value="Q">Q</option>
+                    <option value="$">$</option>
+                </select>
+                <button onclick="saveManagerItem()"
+                    class="bg-indigo-600 text-white font-bold rounded-lg px-4 text-sm"><i
+                        class="fa-solid fa-plus"></i></button>
+            </div>
+            <div id="manager-list" class="max-h-[300px] overflow-y-auto divide-y divide-gray-100"></div>
         </div>
+    </div>
 
-        <button onclick="switchView('stats')" id="mob-nav-stats" class="nav-item inactive flex-1 cursor-pointer">
-            <i class="fa-solid fa-chart-pie"></i>
-            <span>Reporte</span>
-        </button>
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-md border-t border-slate-100 flex justify-around items-end z-[100] pb-4 pt-2 px-2 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <button onclick="switchView('home')" id="mob-nav-home" class="nav-item active flex-1"><i
+                class="fa-solid fa-house"></i><span>Inicio</span></button>
+        <button onclick="switchView('payments')" id="mob-nav-payments" class="nav-item inactive flex-1"><i
+                class="fa-solid fa-calendar-check"></i><span>Pagos</span></button>
+        <div class="relative -top-5" id="fab-container"><button onclick="scrollToForm()"
+                class="btn-bounce w-14 h-14 bg-indigo-600 rounded-full flex items-center justify-center text-white shadow-xl border-4 border-white transition-all mx-auto"><i
+                    class="fa-solid fa-plus text-xl"></i></button></div>
+        <button onclick="switchView('stats')" id="mob-nav-stats" class="nav-item inactive flex-1"><i
+                class="fa-solid fa-chart-pie"></i><span>Reporte</span></button>
     </nav>
 
-    <div id="settings-menu" class="hidden fixed inset-0 z-[600] bg-black/40 backdrop-blur-sm" onclick="toggleMenu()">
+    <div id="settings-menu" class="hidden fixed inset-0 z-[150] bg-black/40 backdrop-blur-sm" onclick="toggleMenu()">
         <div class="absolute top-20 right-4 w-72 bg-white rounded-2xl shadow-2xl overflow-hidden"
             onclick="event.stopPropagation()">
-            <div class="p-4 bg-slate-50 border-b border-gray-100 font-bold text-xs uppercase text-slate-400">Datos</div>
+            <div class="p-4 bg-slate-50 border-b border-gray-100 font-bold text-xs uppercase text-slate-400">
+                Configuración</div>
+            <button onclick="openManager('accounts')"
+                class="w-full flex items-center gap-3 p-4 hover:bg-slate-50 text-left text-slate-700 border-b border-gray-50 font-medium text-sm"><i
+                    class="fa-solid fa-building-columns text-indigo-500"></i> Gestionar Cuentas</button>
+            <button onclick="openManager('categories')"
+                class="w-full flex items-center gap-3 p-4 hover:bg-slate-50 text-left text-slate-700 border-b border-gray-50 font-medium text-sm"><i
+                    class="fa-solid fa-tags text-indigo-500"></i> Gestionar Categorías</button>
+            <div class="p-4 bg-slate-50 border-b border-gray-100 font-bold text-xs uppercase text-slate-400 mt-2">Datos
+            </div>
             <button onclick="exportData()"
                 class="w-full flex items-center gap-3 p-4 hover:bg-slate-50 text-left text-blue-600 border-b border-gray-50 font-medium text-sm"><i
                     class="fa-solid fa-download"></i> Respaldar Datos</button>
@@ -517,13 +476,17 @@
     <script>
         const NETO_MENSUAL = 8637.44;
         const RATES = { ahorro5: 0.055, temporal: 0.035, principal: 0.035, asdep: 0, dolares: 0.01 };
-        const ACCOUNTS = [
-            { id: "monetaria", name: "Monetaria G&T" }, { id: "efectivo", name: "Efectivo" },
-            { id: "ahorro5", name: "Fondo 5A" }, { id: "temporal", name: "Ah. Temporal" },
-            { id: "principal", name: "Ah. Principal" }, { id: "asdep", name: "ASDEP" },
-            { id: "dolares", name: "Cuenta USD" }
-        ];
 
+        const DEFAULT_ACCOUNTS = [
+            { id: "monetaria", name: "Monetaria G&T", currency: "Q" },
+            { id: "efectivo", name: "Efectivo", currency: "Q" },
+            { id: "ahorro5", name: "Fondo 5A", currency: "Q" },
+            { id: "temporal", name: "Ah. Temporal", currency: "Q" },
+            { id: "principal", name: "Ah. Principal", currency: "Q" },
+            { id: "asdep", name: "ASDEP", currency: "Q" },
+            { id: "dolares", name: "Cuenta USD", currency: "$" }
+        ];
+        const DEFAULT_CATEGORIES = ["Saldo Inicial", "Comida", "Transporte", "Suscripciones", "Entretenimiento", "Otros Gastos", "Renta", "Servicios", "Educación", "Salud", "Ropa/Uniforme", "Transferencia"];
         const DEFAULT_FIXED = [
             { id: 1, name: "RENTA", amount: 1000, day: 1 },
             { id: 2, name: "TELÉFONO", amount: 159, day: 1 },
@@ -536,12 +499,14 @@
             { id: 9, name: "FONDO AHORRO", amount: 250, day: 30 }
         ];
 
-        let categories = ["Saldo Inicial", "Comida", "Transporte", "Suscripciones", "Entretenimiento", "Otros Gastos", "Renta", "Servicios", "Educación", "Salud", "Ropa/Uniforme", "Transferencia"];
+        let accounts = JSON.parse(localStorage.getItem('accounts')) || DEFAULT_ACCOUNTS;
+        let categories = JSON.parse(localStorage.getItem('categories')) || DEFAULT_CATEGORIES;
         let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
         let fixedPayments = JSON.parse(localStorage.getItem('fixedPayments')) || DEFAULT_FIXED;
         let myChart = null;
         let privateMode = false;
         let currentUser = localStorage.getItem('username');
+        let activeManagerType = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             if (!currentUser) {
@@ -553,13 +518,16 @@
                 document.getElementById('user-name-display').innerText = currentUser;
                 init();
             }
+            initDate();
+        });
 
+        function initDate() {
             const today = new Date();
             const offset = today.getTimezoneOffset();
             const localDate = new Date(today.getTime() - (offset * 60 * 1000));
             document.getElementById('current-date').innerText = today.toLocaleDateString('es-GT', { weekday: 'long', day: 'numeric', month: 'long' });
             document.getElementById('txDate').value = localDate.toISOString().split('T')[0];
-        });
+        }
 
         function handleLogin(e) {
             e.preventDefault();
@@ -574,351 +542,186 @@
             }
         }
 
-        function logout() {
-            localStorage.removeItem('username');
-            location.reload();
-        }
+        function logout() { localStorage.removeItem('username'); location.reload(); }
 
         function init() {
-            renderCategories();
+            renderAccountCards();
+            renderFormSelects();
             renderList();
             updateBalances();
-            filterDestAccount();
             renderReminders();
         }
 
-        // --- SAFARI-PROOF SCROLL TO FORM (v9.2.0) ---
-        function scrollToForm() {
-            // 1. Force Home View
-            if (document.getElementById('view-home').classList.contains('hidden')) {
-                // If not on home, switch first
-                switchView('home');
-            }
-
-            // 2. Use double requestAnimationFrame to ensure repaint is done on iOS
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    const form = document.getElementById('form-container');
-                    if (form) {
-                        form.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        // Optional: Focus triggers keyboard (might not work on all iOS versions without direct tap)
-                        // document.getElementById('txAmount').focus(); 
-                    }
-                });
-            });
-        }
-
-        function renderReminders() {
-            const today = new Date().getDate();
-            const list = document.getElementById('reminders-list');
-
-            const sorted = [...fixedPayments].sort((a, b) => {
-                const diffA = a.day - today;
-                const diffB = b.day - today;
-                return (diffA >= 0 ? diffA : 100 + diffA) - (diffB >= 0 ? diffB : 100 + diffB);
-            });
-
-            list.innerHTML = sorted.map(r => {
-                const diff = r.day - today;
-                let statusClass, statusIconClass, statusText, statusColor;
-
-                if (diff === 0) {
-                    statusClass = "border-l-4 border-amber-500 bg-amber-50";
-                    statusIconClass = "fa-solid fa-exclamation-circle text-amber-500";
-                    statusText = "¡HOY!";
-                    statusColor = "text-amber-600";
-                } else if (diff > 0) {
-                    statusClass = "border-l-4 border-indigo-500 bg-white";
-                    statusIconClass = "fa-regular fa-clock text-indigo-500";
-                    statusText = `Faltan ${diff} días`;
-                    statusColor = "text-indigo-600";
-                } else {
-                    statusClass = "border-l-4 border-slate-300 bg-slate-50 opacity-60";
-                    statusIconClass = "fa-solid fa-check text-slate-400";
-                    statusText = "Ciclo pasado";
-                    statusColor = "text-slate-500";
-                }
-
-                return `
-                <div class="p-3 rounded-xl shadow-sm flex flex-col justify-between ${statusClass} transition-all hover:shadow-md h-full">
-                    <div class="flex justify-between items-start w-full">
-                        <div class="text-xs bg-white p-1.5 rounded-full shadow-sm"><i class="${statusIconClass}"></i></div>
-                        <span class="text-[9px] font-bold ${statusColor} bg-white/50 px-1.5 rounded">${statusText}</span>
-                    </div>
-                    <div class="mt-2">
-                        <p class="text-[10px] font-bold text-slate-700 uppercase leading-tight truncate">${r.name}</p>
-                        <p class="text-[9px] text-slate-400 mt-0.5">Día ${r.day}</p>
-                        <p class="font-bold text-sm text-slate-800 amount-text mt-1">Q${r.amount.toFixed(2)}</p>
-                    </div>
-                </div>`;
+        function renderAccountCards() {
+            const container = document.getElementById('accounts-container');
+            container.innerHTML = accounts.map(acc => {
+                const isQ = acc.currency === 'Q';
+                const borderColor = isQ ? 'border-indigo-500' : 'border-emerald-500';
+                const bg = isQ ? 'bg-white' : 'bg-emerald-50/30';
+                return `<div class="card-base p-4 min-w-[150px] snap-center border-l-4 ${borderColor} ${bg}"><div class="text-gray-400 text-[9px] uppercase font-bold tracking-wider truncate">${acc.name}</div><div class="text-lg font-bold text-slate-800 mt-1 amount-text" id="bal-${acc.id}">...</div></div>`;
             }).join('');
         }
 
-        function openRemindersModal() {
-            document.getElementById('reminders-modal').classList.remove('hidden');
-            renderModalRemindersList();
-        }
-
-        function closeRemindersModal() {
-            document.getElementById('reminders-modal').classList.add('hidden');
-            document.getElementById('fix-name').value = "";
-            document.getElementById('fix-amount').value = "";
-            document.getElementById('edit-id').value = "";
-            document.getElementById('fix-day').value = "";
-        }
-
-        function renderModalRemindersList() {
-            const list = document.getElementById('modal-reminders-list');
-            list.innerHTML = fixedPayments.map(p => `
-                <div class="p-3 flex justify-between items-center hover:bg-slate-50 border-b border-slate-50 last:border-0">
-                    <div>
-                        <p class="font-bold text-xs text-slate-700">${p.name}</p>
-                        <p class="text-[10px] text-slate-400">Día ${p.day} • Q${p.amount.toFixed(2)}</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="editFixedPayment(${p.id})" class="w-7 h-7 rounded bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition-colors"><i class="fa-solid fa-pen text-xs"></i></button>
-                        <button onclick="deleteFixedPayment(${p.id})" class="w-7 h-7 rounded bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center transition-colors"><i class="fa-solid fa-trash text-xs"></i></button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function saveFixedPayment() {
-            const id = document.getElementById('edit-id').value;
-            const name = document.getElementById('fix-name').value;
-            const amount = parseFloat(document.getElementById('fix-amount').value);
-            const dayStr = document.getElementById('fix-day').value;
-
-            if (!name || isNaN(amount) || !dayStr) { alert("Por favor llena todos los campos"); return; }
-            const day = parseInt(dayStr);
-            if (day < 1 || day > 31) { alert("Día inválido (1-31)"); return; }
-
-            if (id) {
-                const idx = fixedPayments.findIndex(p => p.id == id);
-                if (idx !== -1) fixedPayments[idx] = { id: parseInt(id), name, amount, day };
-            } else {
-                fixedPayments.push({ id: Date.now(), name, amount, day });
-            }
-
-            localStorage.setItem('fixedPayments', JSON.stringify(fixedPayments));
-            renderModalRemindersList();
-            renderReminders();
-            document.getElementById('fix-name').value = "";
-            document.getElementById('fix-amount').value = "";
-            document.getElementById('edit-id').value = "";
-            document.getElementById('fix-day').value = "";
-        }
-
-        function editFixedPayment(id) {
-            const p = fixedPayments.find(item => item.id === id);
-            if (p) {
-                document.getElementById('edit-id').value = p.id;
-                document.getElementById('fix-name').value = p.name;
-                document.getElementById('fix-amount').value = p.amount;
-                document.getElementById('fix-day').value = p.day;
-            }
-        }
-
-        function deleteFixedPayment(id) {
-            if (confirm("¿Eliminar este pago fijo?")) {
-                fixedPayments = fixedPayments.filter(p => p.id !== id);
-                localStorage.setItem('fixedPayments', JSON.stringify(fixedPayments));
-                renderModalRemindersList();
-                renderReminders();
-            }
-        }
-
-        function togglePrivateMode() {
-            privateMode = !privateMode;
-            document.getElementById('app-body').classList.toggle('private-mode', privateMode);
-            document.getElementById('private-icon').className = privateMode ? 'fa-solid fa-eye-slash text-indigo-600' : 'fa-solid fa-eye';
-        }
-
-        function toggleTransferUI(val) {
-            document.getElementById('dest-account-div').classList.toggle('hidden', val !== "Transferencia");
+        function renderFormSelects() {
+            const accSelect = document.getElementById('txAccount');
+            accSelect.innerHTML = accounts.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
+            const catSelect = document.getElementById('txCategory');
+            catSelect.innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join('');
             filterDestAccount();
         }
 
         function filterDestAccount() {
             const origin = document.getElementById('txAccount').value;
-            document.getElementById('txAccountDest').innerHTML = ACCOUNTS.filter(a => a.id !== origin).map(a => `<option value="${a.id}">${a.name}</option>`).join('');
+            const destSelect = document.getElementById('txAccountDest');
+            destSelect.innerHTML = accounts.filter(a => a.id !== origin).map(a => `<option value="${a.id}">${a.name}</option>`).join('');
         }
 
+        function openManager(type) {
+            activeManagerType = type;
+            document.getElementById('manager-modal').classList.remove('hidden');
+            document.getElementById('settings-menu').classList.add('hidden');
+            document.getElementById('manager-title').innerText = type === 'accounts' ? 'Gestionar Cuentas' : 'Gestionar Categorías';
+            document.getElementById('manager-input').placeholder = type === 'accounts' ? 'Nombre de cuenta' : 'Nombre de categoría';
+            document.getElementById('manager-currency').classList.toggle('hidden', type !== 'accounts');
+            renderManagerList();
+        }
+
+        function closeManager() { document.getElementById('manager-modal').classList.add('hidden'); activeManagerType = null; }
+
+        function renderManagerList() {
+            const list = document.getElementById('manager-list');
+            const data = activeManagerType === 'accounts' ? accounts : categories;
+            list.innerHTML = data.map(item => {
+                const id = activeManagerType === 'accounts' ? item.id : item;
+                const name = activeManagerType === 'accounts' ? `${item.name} (${item.currency})` : item;
+                return `<div class="p-3 flex justify-between items-center hover:bg-slate-50"><span class="font-bold text-sm text-slate-700">${name}</span><button onclick="deleteManagerItem('${id}')" class="text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button></div>`;
+            }).join('');
+        }
+
+        function saveManagerItem() {
+            const name = document.getElementById('manager-input').value.trim();
+            if (!name) return;
+            if (activeManagerType === 'accounts') {
+                accounts.push({ id: 'acc_' + Date.now(), name, currency: document.getElementById('manager-currency').value });
+                localStorage.setItem('accounts', JSON.stringify(accounts));
+                renderAccountCards();
+            } else {
+                if (!categories.includes(name)) { categories.push(name); localStorage.setItem('categories', JSON.stringify(categories)); }
+            }
+            document.getElementById('manager-input').value = "";
+            renderManagerList(); renderFormSelects(); updateBalances();
+        }
+
+        function deleteManagerItem(id) {
+            if (!confirm("¿Seguro?")) return;
+            if (activeManagerType === 'accounts') { accounts = accounts.filter(a => a.id !== id); localStorage.setItem('accounts', JSON.stringify(accounts)); renderAccountCards(); }
+            else { categories = categories.filter(c => c !== id); localStorage.setItem('categories', JSON.stringify(categories)); }
+            renderManagerList(); renderFormSelects(); updateBalances();
+        }
+
+        // --- MATH FIX V10.2: CORRECT LOGIC FOR TRANSFERS ---
         function updateBalances() {
-            let bal = { monetaria: 0, efectivo: 0, ahorro5: 0, temporal: 0, principal: 0, asdep: 0, dolares: 0 };
+            let balances = {};
+            accounts.forEach(a => balances[a.id] = 0);
+
             let gastoMes = 0;
             const currentMonth = new Date().getMonth();
 
             transactions.forEach(tx => {
                 let amt = parseFloat(tx.amount);
+
+                // MATH FIX: Explicit Transfer Handling regardless of 'type'
                 if (tx.category === "Transferencia") {
-                    bal[tx.account] -= amt;
-                    if (bal[tx.accountDest] !== undefined) bal[tx.accountDest] += amt;
-                } else if (tx.type === 'income') {
-                    bal[tx.account] += amt;
+                    if (balances[tx.account] !== undefined) balances[tx.account] -= amt;      // Always Subtract from Origin
+                    if (balances[tx.accountDest] !== undefined) balances[tx.accountDest] += amt;  // Always Add to Dest
                 } else {
-                    bal[tx.account] -= amt;
-                    if (new Date(tx.date).getMonth() === currentMonth && tx.category !== "Saldo Inicial") gastoMes += amt;
+                    // Standard Income/Expense
+                    if (balances[tx.account] !== undefined) {
+                        if (tx.type === 'income') balances[tx.account] += amt;
+                        else balances[tx.account] -= amt;
+                    }
+                    if (tx.type === 'expense' && tx.category !== "Saldo Inicial" && new Date(tx.date).getMonth() === currentMonth) {
+                        gastoMes += amt;
+                    }
                 }
             });
 
-            const fmtQ = (n) => "Q" + n.toLocaleString('es-GT', { minimumFractionDigits: 2 });
-            const fmtUsd = (n) => "$" + n.toLocaleString('en-US', { minimumFractionDigits: 2 });
+            let totalQ = 0, totalUSD = 0;
+            accounts.forEach(acc => {
+                const el = document.getElementById(`bal-${acc.id}`);
+                if (el) el.innerText = (acc.currency === 'Q' ? 'Q' : '$') + balances[acc.id].toLocaleString('es-GT', { minimumFractionDigits: 2 });
+                if (acc.currency === 'Q') totalQ += balances[acc.id]; else totalUSD += balances[acc.id];
+            });
 
-            document.getElementById('total-assets-q').innerText = fmtQ(bal.monetaria + bal.efectivo + bal.ahorro5 + bal.temporal + bal.principal + bal.asdep);
-            document.getElementById('total-assets-usd').innerText = fmtUsd(bal.dolares);
+            document.getElementById('total-assets-q').innerText = "Q" + totalQ.toLocaleString('es-GT', { minimumFractionDigits: 2 });
+            document.getElementById('total-assets-usd').innerText = "$" + totalUSD.toLocaleString('en-US', { minimumFractionDigits: 2 });
 
             const pct = Math.min((gastoMes / NETO_MENSUAL) * 100, 100);
-            const bar = document.getElementById('budget-bar');
-            bar.style.width = pct + "%";
-            bar.className = pct >= 90 ? "h-full bg-rose-500" : (pct >= 75 ? "h-full bg-amber-400" : "h-full bg-emerald-400");
-            document.getElementById('main-dashboard').classList.toggle('alert-pulse', pct >= 90);
+            document.getElementById('budget-bar').style.width = pct + "%";
             document.getElementById('budget-pct').innerText = Math.round(pct) + "%";
-            document.getElementById('budget-text').innerText = `${fmtQ(gastoMes)} / ${fmtQ(NETO_MENSUAL)}`;
+            document.getElementById('budget-text').innerText = `Q${gastoMes.toLocaleString('es-GT')} / Q${NETO_MENSUAL.toLocaleString('es-GT')}`;
 
-            ACCOUNTS.forEach(acc => {
-                const el = document.getElementById(`bal-${acc.id}`);
-                if (el) el.innerText = (acc.id === 'dolares') ? fmtUsd(bal[acc.id]) : fmtQ(bal[acc.id]);
-            });
-
-            let intQ = ((bal.ahorro5 * RATES.ahorro5) + (bal.temporal * RATES.temporal) + (bal.principal * RATES.principal)) / 12;
-            document.getElementById('total-interest-q').innerText = "+" + fmtQ(intQ);
-            document.getElementById('total-interest-usd').innerText = (bal.dolares * RATES.dolares / 12).toFixed(2);
+            let intQ = 0;
+            if (balances['ahorro5']) intQ += (balances['ahorro5'] * RATES.ahorro5);
+            if (balances['temporal']) intQ += (balances['temporal'] * RATES.temporal);
+            if (balances['principal']) intQ += (balances['principal'] * RATES.principal);
+            document.getElementById('total-interest-q').innerText = "+Q" + (intQ / 12).toLocaleString('es-GT', { minimumFractionDigits: 2 });
         }
 
-        function addTransaction(e) {
-            e.preventDefault();
-            const amt = parseFloat(document.getElementById('txAmount').value);
-            const btn = document.getElementById('submitBtn');
-            const cat = document.getElementById('txCategory').value;
-
-            if (amt <= 0 || isNaN(amt)) {
-                btn.innerText = "Error ❌"; btn.className = "w-full bg-slate-800 text-white py-4 rounded-xl font-bold";
-                setTimeout(() => setType(document.getElementById('txType').value), 2000); return;
-            }
-
-            const tx = {
-                id: Date.now(),
-                type: document.getElementById('txType').value,
-                account: document.getElementById('txAccount').value,
-                accountDest: document.getElementById('txAccountDest').value,
-                category: cat,
-                amount: amt,
-                desc: document.getElementById('txDesc').value,
-                date: document.getElementById('txDate').value
-            };
-            transactions.push(tx);
-            localStorage.setItem('transactions', JSON.stringify(transactions));
-            init();
-            document.getElementById('txAmount').value = "";
-            document.getElementById('txDesc').value = "";
-            btn.innerText = "¡Registrado! ✅";
-            setTimeout(() => { setType(tx.type); toggleTransferUI(document.getElementById('txCategory').value); }, 1500);
+        function scrollToForm() {
+            if (document.getElementById('view-home').classList.contains('hidden')) switchView('home');
+            requestAnimationFrame(() => { requestAnimationFrame(() => { const form = document.getElementById('form-container'); if (form) form.scrollIntoView({ behavior: 'smooth', block: 'center' }); }); });
         }
-
-        function setType(type) {
-            document.getElementById('txType').value = type;
-            const sBtn = document.getElementById('submitBtn');
-            const exp = document.getElementById('btn-expense');
-            const inc = document.getElementById('btn-income');
-            if (type === 'expense') {
-                sBtn.className = "w-full bg-rose-600 text-white py-4 rounded-xl font-bold shadow-lg transition-all btn-bounce"; sBtn.innerText = "Guardar Gasto";
-                exp.className = "py-2 rounded-lg text-xs font-bold bg-white text-rose-600 shadow-sm transition-all"; inc.className = "py-2 rounded-lg text-xs font-bold text-slate-500 transition-all";
-            } else {
-                sBtn.className = "w-full bg-emerald-600 text-white py-4 rounded-xl font-bold shadow-lg transition-all btn-bounce"; sBtn.innerText = "Guardar Ingreso";
-                inc.className = "py-2 rounded-lg text-xs font-bold bg-white text-emerald-600 shadow-sm transition-all"; exp.className = "py-2 rounded-lg text-xs font-bold text-slate-500 transition-all";
-            }
-        }
-
-        function renderList() {
-            const list = document.getElementById('txList'); list.innerHTML = "";
-            const query = document.getElementById('search-input').value.toLowerCase();
-            const filtered = transactions.filter(t => t.category.toLowerCase().includes(query) || (t.desc && t.desc.toLowerCase().includes(query)));
-            const sorted = filtered.sort((a, b) => b.id - a.id);
-            document.getElementById('tx-count').innerText = sorted.length;
-            sorted.forEach(tx => {
-                const isExp = tx.type === 'expense';
-                const isTrans = tx.category === "Transferencia";
-                let iconClass = isExp ? 'bg-rose-50 text-rose-600' : 'bg-emerald-50 text-emerald-600';
-                let icon = isExp ? 'fa-minus' : 'fa-plus';
-                if (isTrans) { iconClass = 'bg-indigo-50 text-indigo-600'; icon = 'fa-right-left'; }
-
-                list.innerHTML += `<div class="p-4 flex justify-between items-center hover:bg-slate-50 cursor-pointer" onclick="deleteTx(${tx.id})">
-                    <div class="flex gap-3">
-                        <div class="w-10 h-10 rounded-full ${iconClass} flex items-center justify-center text-xs"><i class="fa-solid ${icon}"></i></div>
-                        <div>
-                            <p class="font-bold text-xs text-slate-700 uppercase">${tx.category}</p>
-                            <p class="text-[9px] text-slate-400 uppercase font-medium">
-                                ${isTrans ? tx.account + ' ➔ ' + tx.accountDest : tx.account} • ${tx.date}
-                            </p>
-                            ${tx.desc ? `<p class="text-[10px] text-slate-500 italic mt-0.5">"${tx.desc}"</p>` : ''}
-                        </div>
-                    </div>
-                    <p class="font-bold text-xs amount-text ${isTrans ? 'text-indigo-600' : (isExp ? 'text-rose-600' : 'text-emerald-600')}">
-                        ${isTrans ? '' : (isExp ? '-' : '+')}${tx.account === 'dolares' ? '$' : 'Q'}${tx.amount.toFixed(2)}
-                    </p>
-                </div>`;
-            });
-        }
-
-        function deleteTx(id) { if (confirm("¿Eliminar este movimiento?")) { transactions = transactions.filter(t => t.id !== id); localStorage.setItem('transactions', JSON.stringify(transactions)); init(); } }
 
         function switchView(view) {
-            // Hide All
             document.getElementById('view-home').classList.add('hidden');
             document.getElementById('view-payments').classList.add('hidden');
             document.getElementById('view-stats').classList.add('hidden');
-
-            // Show Target
             document.getElementById(`view-${view}`).classList.remove('hidden');
-
-            // Toggle FAB visibility
             const fab = document.getElementById('fab-container');
-            if (view === 'home') {
-                fab.classList.remove('hidden');
-            } else {
-                fab.classList.add('hidden');
-            }
-
-            // Update Nav Styles
+            if (view === 'home') fab.classList.remove('hidden'); else fab.classList.add('hidden');
             const navs = ['home', 'payments', 'stats'];
-            navs.forEach(n => {
-                document.getElementById(`mob-nav-${n}`).className = "nav-item inactive flex-1 cursor-pointer";
-                if (n !== 'payments') document.getElementById(`desk-nav-${n}`).className = "px-4 py-2 rounded-md text-sm font-bold text-gray-500 hover:text-gray-700 transition-all";
-            });
-
+            navs.forEach(n => { document.getElementById(`mob-nav-${n}`).className = "nav-item inactive flex-1 cursor-pointer"; if (n !== 'payments') document.getElementById(`desk-nav-${n}`).className = "px-4 py-2 rounded-md text-sm font-bold text-gray-500 hover:text-gray-700 transition-all"; });
             document.getElementById(`mob-nav-${view}`).className = "nav-item active flex-1 cursor-pointer";
             if (view !== 'payments') document.getElementById(`desk-nav-${view}`).className = "px-4 py-2 rounded-md text-sm font-bold bg-white shadow text-indigo-600 transition-all";
-
             if (view === 'stats') renderStats();
             window.scrollTo(0, 0);
         }
 
+        function togglePrivateMode() { privateMode = !privateMode; document.getElementById('app-body').classList.toggle('private-mode', privateMode); document.getElementById('private-icon').className = privateMode ? 'fa-solid fa-eye-slash text-indigo-600' : 'fa-solid fa-eye'; }
+        function toggleTransferUI(val) { document.getElementById('dest-account-div').classList.toggle('hidden', val !== "Transferencia"); filterDestAccount(); }
+        function addTransaction(e) {
+            e.preventDefault(); const amt = parseFloat(document.getElementById('txAmount').value); if (amt <= 0 || isNaN(amt)) { alert("Monto inválido"); return; }
+            const tx = { id: Date.now(), type: document.getElementById('txType').value, account: document.getElementById('txAccount').value, accountDest: document.getElementById('txAccountDest').value, category: document.getElementById('txCategory').value, amount: amt, desc: document.getElementById('txDesc').value, date: document.getElementById('txDate').value };
+            transactions.push(tx); localStorage.setItem('transactions', JSON.stringify(transactions)); init(); document.getElementById('txAmount').value = ""; document.getElementById('txDesc').value = ""; alert("Guardado"); setType(tx.type);
+        }
+        function setType(type) { document.getElementById('txType').value = type; const sBtn = document.getElementById('submitBtn'); const exp = document.getElementById('btn-expense'); const inc = document.getElementById('btn-income'); if (type === 'expense') { sBtn.className = "w-full bg-rose-600 text-white py-4 rounded-xl font-bold shadow-lg transition-all btn-bounce"; sBtn.innerText = "Guardar Gasto"; exp.className = "py-2 rounded-lg text-xs font-bold bg-white text-rose-600 shadow-sm transition-all"; inc.className = "py-2 rounded-lg text-xs font-bold text-slate-500 transition-all"; } else { sBtn.className = "w-full bg-emerald-600 text-white py-4 rounded-xl font-bold shadow-lg transition-all btn-bounce"; sBtn.innerText = "Guardar Ingreso"; inc.className = "py-2 rounded-lg text-xs font-bold bg-white text-emerald-600 shadow-sm transition-all"; exp.className = "py-2 rounded-lg text-xs font-bold text-slate-500 transition-all"; } }
+        function deleteTx(id) { if (confirm("¿Eliminar?")) { transactions = transactions.filter(t => t.id !== id); localStorage.setItem('transactions', JSON.stringify(transactions)); init(); } }
+        function renderList() {
+            const list = document.getElementById('txList'); list.innerHTML = ""; const query = document.getElementById('search-input').value.toLowerCase(); const filtered = transactions.filter(t => t.category.toLowerCase().includes(query) || (t.desc && t.desc.toLowerCase().includes(query))); const sorted = filtered.sort((a, b) => b.id - a.id); document.getElementById('tx-count').innerText = sorted.length;
+            sorted.forEach(tx => {
+                const isExp = tx.type === 'expense'; const isTrans = tx.category === "Transferencia"; const accName = accounts.find(a => a.id === tx.account)?.name || 'Cuenta borrada'; const destName = accounts.find(a => a.id === tx.accountDest)?.name || 'Cuenta borrada'; const accCurrency = accounts.find(a => a.id === tx.account)?.currency || 'Q';
+                list.innerHTML += `<div class="p-4 flex justify-between items-center hover:bg-slate-50 cursor-pointer" onclick="deleteTx(${tx.id})"><div class="flex gap-3"><div class="w-10 h-10 rounded-full ${isTrans ? 'bg-indigo-50 text-indigo-600' : (isExp ? 'bg-rose-50 text-rose-600' : 'bg-emerald-50 text-emerald-600')} flex items-center justify-center text-xs"><i class="fa-solid ${isTrans ? 'fa-right-left' : (isExp ? 'fa-minus' : 'fa-plus')}"></i></div><div><p class="font-bold text-xs text-slate-700 uppercase">${tx.category}</p><p class="text-[9px] text-slate-400 uppercase font-medium">${isTrans ? accName + ' ➔ ' + destName : accName} • ${tx.date}</p>${tx.desc ? `<p class="text-[10px] text-slate-500 italic mt-0.5">"${tx.desc}"</p>` : ''}</div></div><p class="font-bold text-xs amount-text ${isTrans ? 'text-indigo-600' : (isExp ? 'text-rose-600' : 'text-emerald-600')}">${isTrans ? '' : (isExp ? '-' : '+')}${accCurrency}${tx.amount.toFixed(2)}</p></div>`;
+            });
+        }
         function renderStats() {
-            const expenses = transactions.filter(t => t.type === 'expense' && t.category !== 'Saldo Inicial' && t.category !== 'Transferencia');
-            const grouped = {}; let total = 0;
-            expenses.forEach(tx => { let amt = parseFloat(tx.amount) * (tx.account === 'dolares' ? 7.75 : 1); grouped[tx.category] = (grouped[tx.category] || 0) + amt; total += amt; });
-            const labels = Object.keys(grouped).sort((a, b) => grouped[b] - grouped[a]);
-            document.getElementById('stat-total-spent').innerText = "Q" + total.toLocaleString('es-GT', { minimumFractionDigits: 2 });
-            if (myChart) myChart.destroy();
-            myChart = new Chart(document.getElementById('expensesChart'), { type: 'doughnut', data: { labels: labels, datasets: [{ data: labels.map(l => grouped[l]), backgroundColor: ['#4f46e5', '#ec4899', '#10b981', '#f59e0b', '#06b6d4', '#8b5cf6'] }] }, options: { plugins: { legend: { display: false } }, cutout: '75%' } });
+            const expenses = transactions.filter(t => t.type === 'expense' && t.category !== 'Saldo Inicial' && t.category !== 'Transferencia'); const grouped = {}; let total = 0;
+            expenses.forEach(tx => { const currency = accounts.find(a => a.id === tx.account)?.currency || 'Q'; let amt = parseFloat(tx.amount) * (currency === '$' ? 7.75 : 1); grouped[tx.category] = (grouped[tx.category] || 0) + amt; total += amt; });
+            const labels = Object.keys(grouped).sort((a, b) => grouped[b] - grouped[a]); document.getElementById('stat-total-spent').innerText = "Q" + total.toLocaleString('es-GT', { minimumFractionDigits: 2 });
+            if (myChart) myChart.destroy(); myChart = new Chart(document.getElementById('expensesChart'), { type: 'doughnut', data: { labels: labels, datasets: [{ data: labels.map(l => grouped[l]), backgroundColor: ['#4f46e5', '#ec4899', '#10b981', '#f59e0b', '#06b6d4', '#8b5cf6'] }] }, options: { plugins: { legend: { display: false } }, cutout: '75%' } });
             document.getElementById('statsList').innerHTML = labels.map(l => `<div class="p-4 flex justify-between"><div><p class="font-bold text-xs text-slate-700">${l}</p><p class="text-[10px] text-slate-400">${Math.round((grouped[l] / total) * 100)}%</p></div><p class="font-bold text-xs text-slate-700 amount-text">Q${grouped[l].toLocaleString('es-GT')}</p></div>`).join('');
         }
-
-        function renderCategories() {
-            const s = document.getElementById('txCategory');
-            const stored = JSON.parse(localStorage.getItem('categories')) || categories;
-            s.innerHTML = stored.map(c => `<option value="${c}">${c}</option>`).join('');
+        function renderReminders() {
+            const today = new Date().getDate(); const list = document.getElementById('reminders-list'); const sorted = [...fixedPayments].sort((a, b) => { const diffA = a.day - today; const diffB = b.day - today; return (diffA >= 0 ? diffA : 100 + diffA) - (diffB >= 0 ? diffB : 100 + diffB); });
+            list.innerHTML = sorted.map(r => { const diff = r.day - today; let statusClass, icon, text, color; if (diff === 0) { statusClass = "border-l-4 border-amber-500 bg-amber-50"; icon = "fa-exclamation-circle text-amber-500"; text = "¡HOY!"; color = "text-amber-600"; } else if (diff > 0) { statusClass = "border-l-4 border-indigo-500 bg-white"; icon = "fa-clock text-indigo-500"; text = `Faltan ${diff} días`; color = "text-indigo-600"; } else { statusClass = "border-l-4 border-slate-300 bg-slate-50 opacity-60"; icon = "fa-check text-slate-400"; text = "Ciclo pasado"; color = "text-slate-500"; } return `<div class="p-3 rounded-xl shadow-sm flex flex-col justify-between ${statusClass} transition-all hover:shadow-md h-full"><div class="flex justify-between items-start w-full"><div class="text-xs bg-white p-1.5 rounded-full shadow-sm"><i class="fa-regular ${icon}"></i></div><span class="text-[9px] font-bold ${color} bg-white/50 px-1.5 rounded">${text}</span></div><div class="mt-2"><p class="text-[10px] font-bold text-slate-700 uppercase leading-tight truncate">${r.name}</p><p class="text-[9px] text-slate-400 mt-0.5">Día ${r.day}</p><p class="font-bold text-sm text-slate-800 amount-text mt-1">Q${r.amount.toFixed(2)}</p></div></div>`; }).join('');
         }
-        function addCategory() {
-            const n = prompt("Nombre de categoría:");
-            if (n) {
-                let stored = JSON.parse(localStorage.getItem('categories')) || categories;
-                if (!stored.includes(n)) { stored.push(n); localStorage.setItem('categories', JSON.stringify(stored)); renderCategories(); document.getElementById('txCategory').value = n; }
-            }
-        }
+        function openRemindersModal() { document.getElementById('reminders-modal').classList.remove('hidden'); renderModalRemindersList(); }
+        function closeRemindersModal() { document.getElementById('reminders-modal').classList.add('hidden'); document.getElementById('fix-name').value = ""; document.getElementById('fix-amount').value = ""; document.getElementById('edit-id').value = ""; document.getElementById('fix-day').value = ""; }
+        function renderModalRemindersList() { document.getElementById('modal-reminders-list').innerHTML = fixedPayments.map(p => `<div class="p-3 flex justify-between items-center hover:bg-slate-50 border-b border-slate-50 last:border-0"><div><p class="font-bold text-xs text-slate-700">${p.name}</p><p class="text-[10px] text-slate-400">Día ${p.day} • Q${p.amount.toFixed(2)}</p></div><div class="flex gap-2"><button onclick="editFixedPayment(${p.id})" class="w-7 h-7 rounded bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition-colors"><i class="fa-solid fa-pen text-xs"></i></button><button onclick="deleteFixedPayment(${p.id})" class="w-7 h-7 rounded bg-red-50 text-red-600 hover:bg-red-100 flex items-center justify-center transition-colors"><i class="fa-solid fa-trash text-xs"></i></button></div></div>`).join(''); }
+        function saveFixedPayment() { const id = document.getElementById('edit-id').value; const name = document.getElementById('fix-name').value; const amount = parseFloat(document.getElementById('fix-amount').value); const day = parseInt(document.getElementById('fix-day').value); if (!name || isNaN(amount) || !day) return; if (id) { const idx = fixedPayments.findIndex(p => p.id == id); if (idx !== -1) fixedPayments[idx] = { id: parseInt(id), name, amount, day }; } else { fixedPayments.push({ id: Date.now(), name, amount, day }); } localStorage.setItem('fixedPayments', JSON.stringify(fixedPayments)); renderModalRemindersList(); renderReminders(); document.getElementById('fix-name').value = ""; document.getElementById('fix-amount').value = ""; document.getElementById('edit-id').value = ""; document.getElementById('fix-day').value = ""; }
+        function editFixedPayment(id) { const p = fixedPayments.find(item => item.id === id); if (p) { document.getElementById('edit-id').value = p.id; document.getElementById('fix-name').value = p.name; document.getElementById('fix-amount').value = p.amount; document.getElementById('fix-day').value = p.day; } }
+        function deleteFixedPayment(id) { if (confirm("¿Eliminar?")) { fixedPayments = fixedPayments.filter(p => p.id !== id); localStorage.setItem('fixedPayments', JSON.stringify(fixedPayments)); renderModalRemindersList(); renderReminders(); } }
         function toggleMenu() { document.getElementById('settings-menu').classList.toggle('hidden'); }
-        function scrollToForm() { document.getElementById('form-container').scrollIntoView({ behavior: 'smooth' }); }
         function exportData() { const a = document.createElement('a'); a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(transactions)); a.download = "backup_finanzas.json"; a.click(); toggleMenu(); }
         function importData(inp) { const f = inp.files[0]; if (!f) return; const r = new FileReader(); r.onload = e => { transactions = JSON.parse(e.target.result); localStorage.setItem('transactions', JSON.stringify(transactions)); init(); toggleMenu(); }; r.readAsText(f); }
         function clearAll() { if (confirm("¿Borrar todo?")) { localStorage.clear(); location.reload(); } }
