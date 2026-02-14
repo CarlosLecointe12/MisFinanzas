@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Finanzas Personales</title>
+    <title>Qontrol</title>
 
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#4f46e5">
+    <meta name="apple-mobile-web-app-title" content="Qontrol">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -38,7 +39,6 @@
             background: white;
         }
 
-        /* FIX FECHA NATIVO */
         input[type="date"] {
             display: block;
             -webkit-appearance: none;
@@ -53,7 +53,8 @@
         }
 
         .btn-bounce:active {
-            transform: scale(0.97);
+            transform: scale(0.95);
+            transition: transform 0.1s;
         }
 
         .alert-pulse {
@@ -91,13 +92,13 @@
         .modal-overlay {
             background-color: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(4px);
-            z-index: 100;
+            z-index: 200;
         }
 
         #login-screen {
             position: fixed;
             inset: 0;
-            z-index: 200;
+            z-index: 300;
             background: white;
             display: flex;
             flex-direction: column;
@@ -132,6 +133,10 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
+
+        .scroll-target {
+            scroll-margin-top: 120px;
+        }
     </style>
 </head>
 
@@ -145,7 +150,7 @@
             </div>
             <div>
                 <h1 class="text-2xl font-bold text-slate-800">Bienvenido</h1>
-                <p class="text-slate-500 text-sm">Finanzas Personales</p>
+                <p class="text-slate-500 text-lg font-medium">Qontrol</p>
             </div>
             <form onsubmit="handleLogin(event)" class="space-y-4">
                 <input type="text" id="login-name" class="input-base text-center font-bold" placeholder="Tu Nombre"
@@ -155,7 +160,7 @@
                     Entrar <i class="fa-solid fa-arrow-right ml-2"></i>
                 </button>
             </form>
-            <p class="text-[10px] text-gray-300 mt-10 uppercase tracking-widest">v7.4.0 • QA Certified</p>
+            <p class="text-[10px] text-gray-300 mt-10 uppercase tracking-widest">v9.1.0 • QA Certified</p>
         </div>
     </div>
 
@@ -169,7 +174,7 @@
                         <i class="fa-solid fa-wallet"></i>
                     </div>
                     <div>
-                        <h1 class="text-lg font-bold leading-none text-slate-800">Mis Finanzas</h1>
+                        <h1 class="text-lg font-bold leading-none text-slate-800 tracking-tight">Qontrol</h1>
                         <p class="text-[11px] text-gray-500 font-medium uppercase mt-0.5">Hola, <span
                                 id="user-name-display">Usuario</span></p>
                     </div>
@@ -305,7 +310,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div id="form-container" class="lg:col-span-1 scroll-mt-28">
+                    <div id="form-container" class="lg:col-span-1 scroll-target">
                         <div class="card-base p-6 space-y-4">
                             <h3 class="font-bold text-slate-700 flex items-center gap-2 text-sm"><i
                                     class="fa-solid fa-plus-circle text-indigo-500"></i> Registrar</h3>
@@ -426,7 +431,7 @@
                         id="year-copy"></span> Todos los Derechos Reservados</p>
                 <p class="text-slate-600 text-sm font-bold">Carlos Eduardo Hernández Lecointe</p>
                 <div class="flex justify-center gap-4 text-slate-300 text-xs"><span>Versión
-                        7.4.0</span><span>•</span><span>QA Software Engineer</span></div>
+                        9.1.0</span><span>•</span><span>QA Software Engineer</span></div>
             </footer>
         </main>
     </div>
@@ -457,7 +462,7 @@
     </div>
 
     <nav
-        class="md:hidden fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur border-t border-slate-100 flex justify-around items-end z-40 pb-4 pt-2 px-2 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+        class="md:hidden fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur border-t border-slate-100 flex justify-around items-end z-[100] pb-4 pt-2 px-2 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
         <button onclick="switchView('home')" id="mob-nav-home" class="nav-item active flex-1">
             <i class="fa-solid fa-house"></i>
             <span>Inicio</span>
@@ -467,9 +472,9 @@
             <span>Pagos</span>
         </button>
 
-        <div class="relative -top-5">
+        <div class="relative -top-5" id="fab-container">
             <button onclick="scrollToForm()"
-                class="w-14 h-14 bg-indigo-600 rounded-full flex items-center justify-center text-white shadow-xl border-4 border-white transition-all active:scale-90 mx-auto">
+                class="btn-bounce w-14 h-14 bg-indigo-600 rounded-full flex items-center justify-center text-white shadow-xl border-4 border-white transition-all mx-auto">
                 <i class="fa-solid fa-plus text-xl"></i>
             </button>
         </div>
@@ -480,7 +485,7 @@
         </button>
     </nav>
 
-    <div id="settings-menu" class="hidden fixed inset-0 z-[70] bg-black/40 backdrop-blur-sm" onclick="toggleMenu()">
+    <div id="settings-menu" class="hidden fixed inset-0 z-[150] bg-black/40 backdrop-blur-sm" onclick="toggleMenu()">
         <div class="absolute top-20 right-4 w-72 bg-white rounded-2xl shadow-2xl overflow-hidden"
             onclick="event.stopPropagation()">
             <div class="p-4 bg-slate-50 border-b border-gray-100 font-bold text-xs uppercase text-slate-400">Datos</div>
@@ -507,16 +512,17 @@
             { id: "dolares", name: "Cuenta USD" }
         ];
 
+        // UPDATED DEFAULT DATA
         const DEFAULT_FIXED = [
-            { id: 1, name: "Renta", amount: 1000, day: 1 },
-            { id: 2, name: "Teléfono", amount: 159, day: 1 },
-            { id: 3, name: "iCloud", amount: 23, day: 3 },
-            { id: 4, name: "ChatGPT", amount: 19.50, day: 5 },
-            { id: 5, name: "Gasolina", amount: 250, day: 15 },
-            { id: 6, name: "Uber One", amount: 39, day: 21 },
-            { id: 7, name: "GTC Alertas", amount: 15, day: 26 },
-            { id: 8, name: "Spotify", amount: 61.39, day: 30 },
-            { id: 9, name: "Fondo Ahorro", amount: 250, day: 30 }
+            { id: 1, name: "RENTA", amount: 1000, day: 1 },
+            { id: 2, name: "TELÉFONO", amount: 159, day: 1 },
+            { id: 3, name: "ICLOUD", amount: 22.96, day: 3 },
+            { id: 4, name: "CHATGPT", amount: 26.60, day: 5 },
+            { id: 5, name: "GASOLINA", amount: 250, day: 15 },
+            { id: 6, name: "UBER ONE", amount: 39, day: 21 },
+            { id: 7, name: "GTC ALERTAS", amount: 15, day: 26 },
+            { id: 8, name: "SPOTIFY", amount: 61.39, day: 30 },
+            { id: 9, name: "FONDO AHORRO", amount: 250, day: 30 }
         ];
 
         let categories = ["Saldo Inicial", "Comida", "Transporte", "Suscripciones", "Entretenimiento", "Otros Gastos", "Renta", "Servicios", "Educación", "Salud", "Ropa/Uniforme", "Transferencia"];
@@ -570,22 +576,22 @@
             renderReminders();
         }
 
-        // --- SCROLL TO FORM ---
+        // --- SCROLL TO FORM (SIMPLIFIED FOR 9.1) ---
         function scrollToForm() {
-            document.getElementById('view-home').classList.remove('hidden');
-            document.getElementById('view-payments').classList.add('hidden');
-            document.getElementById('view-stats').classList.add('hidden');
-
-            document.getElementById('mob-nav-home').className = "nav-item active flex-1";
-            document.getElementById('mob-nav-payments').className = "nav-item inactive flex-1";
-            document.getElementById('mob-nav-stats').className = "nav-item inactive flex-1";
-
-            document.getElementById('desk-nav-home').className = "px-4 py-2 rounded-md text-sm font-bold bg-white shadow text-indigo-600 transition-all";
-            document.getElementById('desk-nav-stats').className = "px-4 py-2 rounded-md text-sm font-bold text-gray-500 hover:text-gray-700 transition-all";
-            document.getElementById('desk-nav-payments').className = "px-4 py-2 rounded-md text-sm font-bold text-gray-500 hover:text-gray-700 transition-all";
+            // Force reset to home view to ensure form is present
+            switchView('home');
 
             setTimeout(() => {
-                document.getElementById('form-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const form = document.getElementById('form-container');
+                const headerOffset = 120;
+                const elementPosition = form.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+
                 document.getElementById('txAmount').focus();
             }, 100);
         }
@@ -671,7 +677,7 @@
             const amount = parseFloat(document.getElementById('fix-amount').value);
             const dayStr = document.getElementById('fix-day').value;
 
-            if (!name || isNaN(amount) || !dayStr) { alert("Por favor llena todos los campos correctamente"); return; }
+            if (!name || isNaN(amount) || !dayStr) { alert("Por favor llena todos los campos"); return; }
             const day = parseInt(dayStr);
             if (day < 1 || day > 31) { alert("Día inválido (1-31)"); return; }
 
@@ -846,18 +852,30 @@
         function deleteTx(id) { if (confirm("¿Eliminar este movimiento?")) { transactions = transactions.filter(t => t.id !== id); localStorage.setItem('transactions', JSON.stringify(transactions)); init(); } }
 
         function switchView(view) {
+            // HIDE ALL
             document.getElementById('view-home').classList.add('hidden');
             document.getElementById('view-payments').classList.add('hidden');
             document.getElementById('view-stats').classList.add('hidden');
 
+            // SHOW TARGET
             document.getElementById(`view-${view}`).classList.remove('hidden');
 
+            // LOGIC FOR FAB VISIBILITY
+            const fab = document.getElementById('fab-container');
+            if (view === 'home') {
+                fab.classList.remove('hidden');
+            } else {
+                fab.classList.add('hidden');
+            }
+
+            // RESET NAV STYLES
             const navs = ['home', 'payments', 'stats'];
             navs.forEach(n => {
                 document.getElementById(`mob-nav-${n}`).className = "nav-item inactive flex-1";
                 if (n !== 'payments') document.getElementById(`desk-nav-${n}`).className = "px-4 py-2 rounded-md text-sm font-bold text-gray-500 hover:text-gray-700 transition-all";
             });
 
+            // ACTIVATE CURRENT NAV
             document.getElementById(`mob-nav-${view}`).className = "nav-item active flex-1";
             if (view !== 'payments') document.getElementById(`desk-nav-${view}`).className = "px-4 py-2 rounded-md text-sm font-bold bg-white shadow text-indigo-600 transition-all";
 
